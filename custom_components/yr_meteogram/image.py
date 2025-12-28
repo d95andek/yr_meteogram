@@ -67,6 +67,7 @@ class YrMeteogramCoordinator(DataUpdateCoordinator[bytes]):
         )
         self.entry = entry
         self.session = async_get_clientsession(hass)
+        self.last_update_success_time: datetime.datetime | None = None
 
     @property
     def location_id(self) -> str:
@@ -114,6 +115,7 @@ class YrMeteogramCoordinator(DataUpdateCoordinator[bytes]):
                 unhide_dark_objects=self.unhide_dark_objects,
                 session=self.session,
             )
+            self.last_update_success_time = datetime.datetime.now(datetime.timezone.utc)
             return svg_content.encode("utf-8")
         except Exception as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
