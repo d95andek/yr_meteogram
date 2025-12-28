@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Lägg till Yr Meteogram",
+        "description": "Konfigurera en ny Yr Meteogram-plats.",
+        "data": {
+          "location_id": "Plats-ID (t.ex. 2-5847504)",
+          "dark_mode": "Mörkt läge",
+          "crop": "Beskär bild",
+          "make_transparent": "Gör transparent",
+          "unhide_dark_objects": "Visa dolda mörka objekt"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Misslyckades att ansluta",
+      "invalid_location": "Ogiltig Plats-ID",
+      "unknown": "Oväntat fel"
+    },
+    "abort": {
+      "already_configured": "Denna plats är redan konfigurerad"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Konfigurera Yr Meteogram",
+        "data": {
+          "dark_mode": "Mörkt läge",
+          "crop": "Beskär bild",
+          "make_transparent": "Gör transparent",
+          "unhide_dark_objects": "Visa dolda mörka objekt"
+        }
+      }
+    }
+  }
+}

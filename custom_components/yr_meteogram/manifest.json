@@ -1,0 +1,14 @@
+{
+  "domain": "yr_meteogram",
+  "name": "Yr Meteogram",
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/d95andek/yr_meteogram",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/d95andek/yr_meteogram/issues",
+  "requirements": [
+    "yr_meteogram_util==0.2.5"
+  ],
+  "version": "0.2.5"
+}

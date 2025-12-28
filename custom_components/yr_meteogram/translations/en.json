@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add Yr Meteogram",
+        "description": "Configure a new Yr Meteogram location.",
+        "data": {
+          "location_id": "Location ID (e.g., 2-5847504)",
+          "dark_mode": "Dark Mode",
+          "crop": "Crop Image",
+          "make_transparent": "Make Transparent",
+          "unhide_dark_objects": "Unhide Dark Objects"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_location": "Invalid Location ID",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This location is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Yr Meteogram",
+        "data": {
+          "dark_mode": "Dark Mode",
+          "crop": "Crop Image",
+          "make_transparent": "Make Transparent",
+          "unhide_dark_objects": "Unhide Dark Objects"
+        }
+      }
+    }
+  }
+}
