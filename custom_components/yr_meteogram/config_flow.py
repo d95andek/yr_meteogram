@@ -34,7 +34,6 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         vol.Optional(CONF_DARK_MODE, default=DEFAULT_DARK_MODE): bool,
         vol.Optional(CONF_CROP, default=DEFAULT_CROP): bool,
         vol.Optional(CONF_MAKE_TRANSPARENT, default=DEFAULT_MAKE_TRANSPARENT): bool,
-        vol.Optional(CONF_UNHIDE_DARK_OBJECTS, default=DEFAULT_UNHIDE_DARK_OBJECTS): bool,
     }
 )
 
@@ -102,7 +101,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "unknown"
             else:
                 # Create a unique ID based on the config to allow multiple entries for same location but different settings
-                unique_id = f"{user_input[CONF_LOCATION_ID]}_{user_input[CONF_DARK_MODE]}_{user_input[CONF_CROP]}_{user_input[CONF_MAKE_TRANSPARENT]}_{user_input[CONF_UNHIDE_DARK_OBJECTS]}"
+                unique_id = f"{user_input[CONF_LOCATION_ID]}_{user_input[CONF_DARK_MODE]}_{user_input[CONF_CROP]}_{user_input[CONF_MAKE_TRANSPARENT]}_{user_input.get(CONF_UNHIDE_DARK_OBJECTS, DEFAULT_UNHIDE_DARK_OBJECTS)}"
                 
                 await self.async_set_unique_id(unique_id)
                 self._abort_if_unique_id_configured()
@@ -127,7 +126,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
     def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
         """Initialize options flow."""
-        self.config_entry = config_entry
+        self._config_entry = config_entry
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
@@ -140,34 +139,41 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             # We can store them in options.
             return self.async_create_entry(title="", data=user_input)
 
+        # Get current values
+        current_dark_mode = self._config_entry.options.get(
+            CONF_DARK_MODE, self._config_entry.data.get(CONF_DARK_MODE, DEFAULT_DARK_MODE)
+        )
+
+        schema = {
+            vol.Optional(
+                CONF_DARK_MODE,
+                default=current_dark_mode,
+            ): bool,
+            vol.Optional(
+                CONF_CROP,
+                default=self._config_entry.options.get(
+                    CONF_CROP, self._config_entry.data.get(CONF_CROP, DEFAULT_CROP)
+                ),
+            ): bool,
+            vol.Optional(
+                CONF_MAKE_TRANSPARENT,
+                default=self._config_entry.options.get(
+                    CONF_MAKE_TRANSPARENT, self._config_entry.data.get(CONF_MAKE_TRANSPARENT, DEFAULT_MAKE_TRANSPARENT)
+                ),
+            ): bool,
+        }
+
+        if current_dark_mode:
+            schema[
+                vol.Optional(
+                    CONF_UNHIDE_DARK_OBJECTS,
+                    default=self._config_entry.options.get(
+                        CONF_UNHIDE_DARK_OBJECTS, self._config_entry.data.get(CONF_UNHIDE_DARK_OBJECTS, DEFAULT_UNHIDE_DARK_OBJECTS)
+                    ),
+                )
+            ] = bool
+
         return self.async_show_form(
             step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(
-                        CONF_DARK_MODE,
-                        default=self.config_entry.options.get(
-                            CONF_DARK_MODE, self.config_entry.data.get(CONF_DARK_MODE, DEFAULT_DARK_MODE)
-                        ),
-                    ): bool,
-                    vol.Optional(
-                        CONF_CROP,
-                        default=self.config_entry.options.get(
-                            CONF_CROP, self.config_entry.data.get(CONF_CROP, DEFAULT_CROP)
-                        ),
-                    ): bool,
-                    vol.Optional(
-                        CONF_MAKE_TRANSPARENT,
-                        default=self.config_entry.options.get(
-                            CONF_MAKE_TRANSPARENT, self.config_entry.data.get(CONF_MAKE_TRANSPARENT, DEFAULT_MAKE_TRANSPARENT)
-                        ),
-                    ): bool,
-                    vol.Optional(
-                        CONF_UNHIDE_DARK_OBJECTS,
-                        default=self.config_entry.options.get(
-                            CONF_UNHIDE_DARK_OBJECTS, self.config_entry.data.get(CONF_UNHIDE_DARK_OBJECTS, DEFAULT_UNHIDE_DARK_OBJECTS)
-                        ),
-                    ): bool,
-                }
-            ),
+            data_schema=vol.Schema(schema),
         )

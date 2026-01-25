@@ -8,7 +8,7 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/d95andek/yr_meteogram/issues",
   "requirements": [
-    "yr_meteogram_util==0.2.5"
+    "yr_meteogram_util==0.2.6"
   ],
-  "version": "0.2.5"
+  "version": "0.2.6"
 }
